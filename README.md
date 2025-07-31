@@ -2,6 +2,16 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.4.
 
+## Overview
+
+NotificacaoFrontend is an Angular application for sending and tracking notifications in real time. It uses Socket.IO for live status updates and provides a simple interface to send messages and monitor their processing status.
+
+## Features
+
+- Send notifications with custom messages
+- Real-time status updates for each notification
+- Status indicators: Pending, Success, or Failed
+
 ## Development server
 
 To start a local development server, run:
