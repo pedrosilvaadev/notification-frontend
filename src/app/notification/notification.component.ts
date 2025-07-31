@@ -26,19 +26,14 @@ export class NotificationComponent implements OnInit, OnDestroy {
   constructor(private notificationService: NotificationService) {}
 
   ngOnInit() {
-    this.socket = io('http://localhost:3000');
-
-    this.socket.on(
-      'statusUpdate',
-      (data: { messageId: string; status: string }) => {
-        const notif = this.notifications.find(
-          (n) => n.messageId === data.messageId
-        );
-        if (notif) {
-          notif.status = data.status;
-        }
+    this.notificationService.statusUpdates$.subscribe((data) => {
+      const notif = this.notifications.find(
+        (n) => n.messageId === data.messageId
+      );
+      if (notif) {
+        notif.status = data.status;
       }
-    );
+    });
   }
 
   ngOnDestroy() {
