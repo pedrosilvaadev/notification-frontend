@@ -1,0 +1,17 @@
+<div class="notification-container">
+  <input [(ngModel)]="newMessage" placeholder="Digite sua notificação" />
+  <button (click)="send()">Enviar Notificação</button>
+</div>
+
+<ul>
+  <li *ngFor="let notification of notifications">
+    <div>
+      <strong>Id: {{ notification.messageId }}</strong>
+      <p>Mensagem: {{ notification.messageContent }}</p>
+    </div>
+    <div class="status-container">
+      <span>Status: {{ notification.status }}</span>
+      <span class="status-indicator" [ngClass]="getStatusClass(notification.status)"></span>
+    </div>
+  </li>
+</ul>
