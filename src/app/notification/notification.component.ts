@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotificationService } from './notification.service';
+import { io, Socket } from 'socket.io-client';
 
 interface NotificationItem {
   messageId: string;
@@ -16,11 +17,35 @@ interface NotificationItem {
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.css'],
 })
-export class NotificationComponent {
+export class NotificationComponent implements OnInit, OnDestroy {
   notifications: NotificationItem[] = [];
   newMessage = '';
 
+  private socket!: Socket;
+
   constructor(private notificationService: NotificationService) {}
+
+  ngOnInit() {
+    this.socket = io('http://localhost:3000');
+
+    this.socket.on(
+      'statusUpdate',
+      (data: { messageId: string; status: string }) => {
+        const notif = this.notifications.find(
+          (n) => n.messageId === data.messageId
+        );
+        if (notif) {
+          notif.status = data.status;
+        }
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    if (this.socket) {
+      this.socket.disconnect();
+    }
+  }
 
   send() {
     if (!this.newMessage.trim()) return;
